@@ -48,7 +48,7 @@ dependencies {
 publish {
     userOrg = 'knight'//bintray.com用户名
     groupId = 'com.knight'//jcenter上的路径
-    artifactId = 'alphavideoplayer'//项目名称
+    artifactId = 'alphaplayer'//项目名称
     publishVersion = "$PLAYER_TOOL_VERSION" //版本号
     desc = 'this is a tools'//描述，不重要
 }
