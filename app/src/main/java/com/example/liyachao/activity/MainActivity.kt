@@ -6,7 +6,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.example.liyachao.R
+import com.example.liyachao.permission.PermissionUtils
 import com.example.liyachao.utils.FileUtil
 import com.knight.alphavideoplayer.giftvideo.VideoController
 import com.knight.glview.CameraMediaControl
@@ -24,27 +26,22 @@ class MainActivity : Activity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        PermissionUtils.checkPermissions1({
+            setContentView(R.layout.activity_main)
+            videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.IJKPLAYER)
+            try {
+                videoController.prepareVideo(FileUtil.initPath() + "Alarms/unicorn.mp4")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            videoController.start()
+            FileUtil.initPath()
+            mSwitchCamera.setOnClickListener(this)
+            mPlayMp4.setOnClickListener(this)
+            control = mCameraGLSurfaceView.mediaControl
+        }, arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
 
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-            }
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
-            }
-        }
-        videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.IJKPLAYER)
-        videoController.prepareVideo(FileUtil.initPath() + "Alarms/unicorn.mp4")
-        videoController.start()
-        FileUtil.initPath()
-        mSwitchCamera.setOnClickListener(this)
-        mPlayMp4.setOnClickListener(this)
-        control = mCameraGLSurfaceView.mediaControl
     }
 
     override fun onClick(v: View) {
@@ -53,7 +50,11 @@ class MainActivity : Activity(), View.OnClickListener {
 
             mPlayMp4 -> videoController.start()
         }
+    }
 
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
