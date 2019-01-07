@@ -19,8 +19,8 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity : Activity(), View.OnClickListener {
 
-
     lateinit var control: CameraMediaControl
+    lateinit var videoController: VideoController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,28 +38,22 @@ class MainActivity : Activity(), View.OnClickListener {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
             }
         }
-        val videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.IJKPLAYER)
+        videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.IJKPLAYER)
         videoController.prepareVideo(FileUtil.initPath() + "Alarms/unicorn.mp4")
         videoController.start()
         FileUtil.initPath()
         mSwitchCamera.setOnClickListener(this)
+        mPlayMp4.setOnClickListener(this)
         control = mCameraGLSurfaceView.mediaControl
     }
 
-    override fun onResume() {
-        // TODO Auto-generated method stub
-        super.onResume()
-        //        mCameraGLSurfaceView.bringToFront();
-    }
-
-    override fun onPause() {
-        // TODO Auto-generated method stub
-        super.onPause()
-        //        mCameraGLSurfaceView.onPause();
-    }
-
-
     override fun onClick(v: View) {
-        control.switchCamera()
+        when (v) {
+            mSwitchCamera -> control.switchCamera()
+
+            mPlayMp4 -> videoController.start()
+        }
+
+
     }
 }
