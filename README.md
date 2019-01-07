@@ -1,3 +1,5 @@
+## [中文介绍](https://blog.csdn.net/a296777513/article/details/70495534)
+
 # Multiple Stream GLSufaceView
 
 [ ![Download](https://api.bintray.com/packages/knight/maven/glview/images/download.svg?version=1.0.0) ](https://bintray.com/knight/maven/glview/1.0.0/link)
