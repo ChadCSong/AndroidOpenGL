@@ -2,10 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.novoda.bintray-release'//添加
+apply plugin: 'maven'
+
 android {
     compileSdkVersion 28
-
-
 
     defaultConfig {
         minSdkVersion 21
@@ -42,4 +43,12 @@ dependencies {
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.9.3'
     implementation 'com.parse.bolts:bolts-tasks:1.4.0'
+}
+
+publish {
+    userOrg = 'knight'//bintray.com用户名
+    groupId = 'com.knight'//jcenter上的路径
+    artifactId = 'alphavideoplayer'//项目名称
+    publishVersion = "$PLAYER_TOOL_VERSION" //版本号
+    desc = 'this is a tools'//描述，不重要
 }
