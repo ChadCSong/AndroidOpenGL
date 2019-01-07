@@ -6,12 +6,11 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.FrameLayout
 import com.example.liyachao.R
 import com.example.liyachao.utils.FileUtil
-import com.example.liyachao.video.CameraGLSurfaceView
 import com.knight.alphavideoplayer.giftvideo.VideoController
+import com.knight.glview.CameraMediaControl
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * @author liyachao 296777513
@@ -20,8 +19,8 @@ import com.knight.alphavideoplayer.giftvideo.VideoController
  */
 class MainActivity : Activity(), View.OnClickListener {
 
-    internal var mCameraGLSurfaceView: CameraGLSurfaceView? = null
-    internal var mSwitchBtn: Button? = null
+
+    lateinit var control: CameraMediaControl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +38,12 @@ class MainActivity : Activity(), View.OnClickListener {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), 1)
             }
         }
-        val root = findViewById<FrameLayout>(R.id.root)
-        val videoController = VideoController(root,isLoop = false,playerType = VideoController.IJKPLAYER)
+        val videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.IJKPLAYER)
         videoController.prepareVideo(FileUtil.initPath() + "Alarms/unicorn.mp4")
         videoController.start()
-//        FileUtil.initPath()
-//        val file = File(Environment.getExternalStorageDirectory().toString() + "/Alarms/unicorn.mp4")
-//
-//        Log.i("liyachao333", "file: " + file.absolutePath)
+        FileUtil.initPath()
+        mSwitchCamera.setOnClickListener(this)
+        control = mCameraGLSurfaceView.mediaControl
     }
 
     override fun onResume() {
@@ -63,6 +60,6 @@ class MainActivity : Activity(), View.OnClickListener {
 
 
     override fun onClick(v: View) {
-        mCameraGLSurfaceView!!.switchCamera()
+        control.switchCamera()
     }
 }

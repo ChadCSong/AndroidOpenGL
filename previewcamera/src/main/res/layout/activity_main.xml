@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
+    android:id="@+id/mRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_launcher"
     tools:context="com.example.liyachao.activity.MainActivity">
 
-    <com.knight.alphavideoplayer.giftvideo.view.surfaceview.AlphaGLSurfaceView
-    android:id="@+id/camera_gl_surface_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <com.knight.glview.CameraGLSurfaceView
+        android:id="@+id/mCameraGLSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!--<com.knight.alphavideoplayer.giftvideo.view.AlphaTextureView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
 
-    <!--<Button-->
-    <!--android:id="@+id/switch_camera"-->
-    <!--android:layout_width="100dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginBottom="20dp"-->
-    <!--android:text="转换摄像头" />-->
+    <Button
+        android:id="@+id/mSwitchCamera"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:text="switch" />
 
 </FrameLayout>

@@ -1,1 +1,2 @@
 include ':previewcamera', ':alpha-mp4-player'
+include ':multiple-stream-glview'

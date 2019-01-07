@@ -52,6 +52,7 @@ class MediaPlayer(override val listener: VideoPlayerListener, override val conte
     }
 
     override fun getDuration(): Long = mMediaPlayer.duration.toLong()
+
     override fun buildUri(mp4Res: Any): Uri {
         return when {
             mp4Res is Int -> {
