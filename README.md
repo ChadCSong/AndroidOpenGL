@@ -25,7 +25,7 @@ dependencies{
 
 ## Usage
 
-In layout's xml
+In layout's xml:
 
 ```xml
 <com.knight.glview.CameraGLSurfaceView
@@ -40,7 +40,7 @@ In layout's xml
 
 then you can run this project and see the effect. I have package all code in library, if you want konw this funtion's theroy, you can **download** source code , **reading the fxxking code **.
 
-I just input a random video, and preview camera, you can realize more function
+I just input a random video, and preview camera, you can realize more function.
 
 
 # AlphaPlayer
@@ -76,7 +76,7 @@ val videoController = VideoController(mRoot, isLoop = false, playerType = VideoC
         videoController.start()
 ```
 
-Then you can run this app
+Then you can run this app.
 
 
 # Improve
