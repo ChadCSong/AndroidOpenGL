@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.LoopingMediaSource
 import com.google.android.exoplayer2.upstream.DataSpec
@@ -42,12 +43,6 @@ class exoPlayer(override val listener: VideoPlayerListener, override val context
                     }
                 }
             })
-
-            addVideoListener(object : VideoListener {
-                override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
-                    listener.onVideoSizeChanged(this@exoPlayer, width, height)
-                }
-            })
         }
     }
     val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, "player"))
@@ -55,6 +50,13 @@ class exoPlayer(override val listener: VideoPlayerListener, override val context
     override fun start() {
 //        mMediaPlayer.start()
         Log.i("liyachao222", "start")
+//        mMediaPlayer.playWhenReady = true
+        if (isLoop) {
+            val loopingMediaSource = LoopingMediaSource(videoSource)
+            mMediaPlayer.prepare(loopingMediaSource)
+        } else {
+            mMediaPlayer.prepare(videoSource)
+        }
         mMediaPlayer.playWhenReady = true
     }
 
@@ -95,17 +97,8 @@ class exoPlayer(override val listener: VideoPlayerListener, override val context
 
     }
 
+    lateinit var videoSource: ExtractorMediaSource
     override fun prepare(mp4Res: Any) {
-        call(Callable<Any> {
-            val videoSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(buildUri(mp4Res))
-            if (isLoop) {
-                val loopingMediaSource = LoopingMediaSource(videoSource)
-                mMediaPlayer.prepare(loopingMediaSource)
-            } else {
-                mMediaPlayer.prepare(videoSource)
-            }
-//            mMediaPlayer.playWhenReady = true
-            return@Callable null
-        }, Task.UI_THREAD_EXECUTOR)
+        videoSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(buildUri(mp4Res))
     }
 }
