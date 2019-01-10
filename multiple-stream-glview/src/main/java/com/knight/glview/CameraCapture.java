@@ -20,6 +20,7 @@ public class CameraCapture {
 
     private static final float DEFAULT_PREVIEW_RATE = 4f / 3f;
 
+    private float mScreenRate = DEFAULT_PREVIEW_RATE;
     private Camera mCamera;
     private Camera.Parameters mParams;
     private boolean isPreviewing = false;
@@ -42,6 +43,10 @@ public class CameraCapture {
 
     public static CameraCapture get() {
         return sInstance;
+    }
+
+    public void setRatio(float screenRate) {
+        mScreenRate = screenRate;
     }
 
 
@@ -84,7 +89,6 @@ public class CameraCapture {
         LOG.logI("Front Camera open 异常!!!");
         doStopCamera();
     }
-
 
 
     public void switchCamera(int cameraPosition) {
@@ -178,8 +182,9 @@ public class CameraCapture {
 
             mParams = mCamera.getParameters();
             //设置PreviewSize和PictureSize
+            LOG.logI("最终设置 rate: " + mScreenRate);
             Camera.Size previewSize = CameraUtil.chooseOptimalSize(
-                    mParams.getSupportedPreviewSizes(), DEFAULT_PREVIEW_RATE, 800);
+                    mParams.getSupportedPreviewSizes(), mScreenRate, 800);
             mParams.setPreviewSize(previewSize.width, previewSize.height);
 
             mCamera.setDisplayOrientation(90);
@@ -195,9 +200,9 @@ public class CameraCapture {
 
             mParams = mCamera.getParameters(); //重新get一次
             LOG.logI("最终设置:PreviewSize--With = " + mParams.getPreviewSize().width
-                    + "Height = " + mParams.getPreviewSize().height);
+                    + " Height = " + mParams.getPreviewSize().height);
             LOG.logI("最终设置:PictureSize--With = " + mParams.getPictureSize().width
-                    + "Height = " + mParams.getPictureSize().height);
+                    + " Height = " + mParams.getPictureSize().height);
         }
     }
 

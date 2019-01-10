@@ -96,7 +96,7 @@ class NormalDrawer(override val mTexture: Int,
         mSurface.updateTexImage()
         GLES20.glUseProgram(mProgram)
 
-        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTexture)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTexture)
 
         GLES20.glEnableVertexAttribArray(mPositionHandle)
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0,

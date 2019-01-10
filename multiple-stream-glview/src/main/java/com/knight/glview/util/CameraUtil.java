@@ -27,18 +27,22 @@ public class CameraUtil {
     public static Camera.Size chooseOptimalSize(List<Camera.Size> list, float th, int minWidth) {
         Collections.sort(list, new CameraSizeComparator());
 
+        int mismatchingIndex = 0;
         int i = 0;
         for (Camera.Size s : list) {
-            LOG.logI("PreviewSize:w = " + s.width + "h = " + s.height);
+            LOG.logI("最终设置 PreviewSize:w = " + s.width + "h = " + s.height);
             if ((s.width >= minWidth) && equalRate(s, th)) {
-
+                LOG.logI("最终设置 final PreviewSize:w = " + s.width + "h = " + s.height);
                 break;
+            }
+            if (s.width >= minWidth && mismatchingIndex == 0) {
+                mismatchingIndex = i;
             }
             i++;
         }
         if (i == list.size()) {
             LOG.logE("找不到合适的预览尺寸！！！");
-            i = 0;//如果没找到，就选最小的size
+            i = mismatchingIndex;//如果没找到，就选最小的size
         }
         return list.get(i);
     }

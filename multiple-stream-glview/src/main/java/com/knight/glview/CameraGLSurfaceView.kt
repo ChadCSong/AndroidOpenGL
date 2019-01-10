@@ -11,6 +11,7 @@ import com.knight.glview.gles.NormalDrawer
 import com.knight.glview.gles.CameraDrawer
 import com.knight.glview.gles.IDrawer
 import com.knight.glview.util.GlUtil
+import com.knight.glview.util.LOG
 import java.util.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -50,7 +51,12 @@ class CameraGLSurfaceView(private val mContext: Context, attrs: AttributeSet) : 
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
         GLES20.glViewport(0, 0, width, height)
-        mediaControl.bindSurface(mSurfaceTextures)
+        val rate = height.toFloat() / width.toFloat()
+        LOG.logI("最终设置 GLSurfaceView width: $width  height: $height  rate: $rate")
+        val dm = context.resources.displayMetrics
+        LOG.logI("最终设置 屏幕 width: ${dm.widthPixels}  height: ${dm.heightPixels}  rate: ${dm.heightPixels.toFloat()/dm.widthPixels.toFloat()}")
+
+        mediaControl.bindSurface(mSurfaceTextures, rate)
     }
 
     override fun onDrawFrame(gl: GL10) {

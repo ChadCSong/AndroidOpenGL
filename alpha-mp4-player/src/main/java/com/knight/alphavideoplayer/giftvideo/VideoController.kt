@@ -7,30 +7,31 @@ import android.support.annotation.IntDef
 import android.view.ViewGroup
 import com.knight.alphavideoplayer.giftvideo.player.IPlayer
 import com.knight.alphavideoplayer.giftvideo.player.VideoPlayerListener
-import com.knight.alphavideoplayer.giftvideo.player.exo.exoPlayer
+import com.knight.alphavideoplayer.giftvideo.player.exo.ExoPlayer
 import com.knight.alphavideoplayer.giftvideo.player.ijk.IjkPlayer
 import com.knight.alphavideoplayer.giftvideo.player.system.MediaPlayer
 import com.knight.alphavideoplayer.giftvideo.view.IAlphaView
 import com.knight.alphavideoplayer.giftvideo.view.surfaceview.AlphaGLSurfaceView
 import com.knight.alphavideoplayer.giftvideo.view.textureview.AlphaTextureView
+import com.knight.alphavideoplayer.utils.LOG
 
 class VideoController(val parent: ViewGroup, val isLoop: Boolean = false,
-                      @PlayerType playerType: Int = IJKPLAYER, @ViewType viewType: Int = GLSURFACEVIEW) : LifecycleObserver {
+                      @PlayerType playerType: Int = PLAYER_IJK, @ViewType viewType: Int = VIEW_GLSURFACE) : LifecycleObserver {
 
     companion object {
-        const val IJKPLAYER = 1
-        const val EXOPLAYER = 2
-        const val MEDIAPLAYER = 3
+        const val PLAYER_IJK = 1
+        const val PLAYER_EXO = 2
+        const val PLAYER_MEDIA = 3
 
-        @IntDef(IJKPLAYER, EXOPLAYER, MEDIAPLAYER)
+        @IntDef(PLAYER_IJK, PLAYER_EXO, PLAYER_MEDIA)
         @Retention(AnnotationRetention.SOURCE)
         annotation class PlayerType
 
 
-        const val GLSURFACEVIEW = 4
-        const val TEXUTREVIEW = 5
+        const val VIEW_GLSURFACE = 4
+        const val VIEW_GLTEXUTRE = 5
 
-        @IntDef(GLSURFACEVIEW, TEXUTREVIEW)
+        @IntDef(VIEW_GLSURFACE, VIEW_GLTEXUTRE)
         @Retention(AnnotationRetention.SOURCE)
         annotation class ViewType
     }
@@ -39,8 +40,8 @@ class VideoController(val parent: ViewGroup, val isLoop: Boolean = false,
     private val context = parent.context
     val player: IPlayer by lazy(LazyThreadSafetyMode.NONE) {
         when (playerType) {
-            IJKPLAYER -> IjkPlayer(listener, context, isLoop)
-            EXOPLAYER -> exoPlayer(listener, context, isLoop)
+            PLAYER_IJK -> IjkPlayer(listener, context, isLoop)
+            PLAYER_EXO -> ExoPlayer(listener, context, isLoop)
             else -> MediaPlayer(listener, context, isLoop)
         }
     }
@@ -62,7 +63,7 @@ class VideoController(val parent: ViewGroup, val isLoop: Boolean = false,
 
     val alphaView: IAlphaView by lazy(LazyThreadSafetyMode.NONE) {
         when (viewType) {
-            GLSURFACEVIEW -> AlphaGLSurfaceView(context) as IAlphaView
+            VIEW_GLSURFACE -> AlphaGLSurfaceView(context) as IAlphaView
             else -> AlphaTextureView(context) as IAlphaView
         }
     }
@@ -76,7 +77,13 @@ class VideoController(val parent: ViewGroup, val isLoop: Boolean = false,
     }
 
     fun prepareVideo(mp4Path: String) {
-        player.prepare(mp4Path)
+        try {
+            player.prepare(mp4Path)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            LOG.logE(e.toString())
+        }
+
     }
 
     fun start() {
