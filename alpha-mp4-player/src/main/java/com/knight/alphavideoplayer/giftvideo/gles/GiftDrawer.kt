@@ -25,9 +25,9 @@ class GiftDrawer(val mTexture: Int, val context: Context) {
 
     private val mVertices = floatArrayOf(
             // X, Y,  U, V
-            -1.0f, -1.0f,  0.5f, 1f,
+            -1.0f, -1.0f,  0.3333f, 1f,
             1.0f, -1.0f, 1f, 1f,
-            -1.0f, 1.0f, 0.5f, 0f,
+            -1.0f, 1.0f, 0.3333f, 0f,
             1.0f, 1.0f, 1f, 0f
     )
 

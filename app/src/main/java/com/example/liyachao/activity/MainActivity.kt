@@ -37,7 +37,7 @@ class MainActivity : Activity(), View.OnClickListener {
              *   @mRoot父布局
              */
             videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.PLAYER_EXO, viewType = VideoController.VIEW_GLSURFACE)
-            videoController.prepareVideo(FileUtil.initPath() + "Alarms/unicorn.mp4")
+            videoController.prepareVideo(FileUtil.initPath() + "Alarms/tt3.mp4")
 //            videoController.start()
             FileUtil.initPath()
             mSwitchCamera.setOnClickListener(this)
