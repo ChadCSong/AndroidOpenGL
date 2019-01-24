@@ -8,6 +8,7 @@ import com.example.liyachao.R
 import com.example.liyachao.permission.PermissionUtils
 import com.example.liyachao.utils.FileUtil
 import com.knight.alphavideoplayer.giftvideo.VideoController
+import com.knight.alphavideoplayer.utils.Constants
 import com.knight.glview.CameraMediaControl
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,13 +37,15 @@ class MainActivity : Activity(), View.OnClickListener {
              *   @isLoop 是否循环播放
              *   @mRoot父布局
              */
-            videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.PLAYER_EXO, viewType = VideoController.VIEW_GLSURFACE)
-            videoController.prepareVideo(FileUtil.initPath() + "Alarms/tt3.mp4")
+            videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.PLAYER_MEDIA, viewType = VideoController.VIEW_GLSURFACE)
+            videoController.prepareVideo(FileUtil.initPath() + "Alarms/boat8.mp4")
 //            videoController.start()
             FileUtil.initPath()
             mSwitchCamera.setOnClickListener(this)
             mPlayMp4.setOnClickListener(this)
-            control = mCameraGLSurfaceView.mediaControl
+            mPlayNewMp4.setOnClickListener(this)
+            mChangeMp4.setOnClickListener(this)
+//            control = mCameraGLSurfaceView.mediaControl
         }, arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
 
     }
@@ -51,8 +54,28 @@ class MainActivity : Activity(), View.OnClickListener {
         when (v) {
             mSwitchCamera -> control.switchCamera()
 
-            mPlayMp4 -> videoController.start()
+            mPlayMp4 -> {
+                Constants.isNewPlayer = false
+                initPlayer()
+                videoController.start()
+            }
+
+            mPlayNewMp4 -> {
+                Constants.isNewPlayer = true
+                initPlayer()
+                videoController.start()
+            }
+            mChangeMp4 -> index = (index + 1) % 4
         }
+    }
+
+    val newMp4 = arrayOf("boat1.mp4", "rocket1.mp4", "fastboat1.mp4", "airplane1.mp4")
+    val oldMp4 = arrayOf("boat.mp4", "rocket.mp4", "fastboat.mp4", "airplane.mp4")
+    var index = 0
+    private fun initPlayer() {
+        mRoot.removeView(videoController.alphaView.mView)
+        videoController = VideoController(mRoot, isLoop = false, playerType = VideoController.PLAYER_EXO, viewType = VideoController.VIEW_GLSURFACE)
+        videoController.prepareVideo(FileUtil.initPath() + "Alarms/${if (Constants.isNewPlayer) newMp4[index] else oldMp4[index]}")
     }
 
 

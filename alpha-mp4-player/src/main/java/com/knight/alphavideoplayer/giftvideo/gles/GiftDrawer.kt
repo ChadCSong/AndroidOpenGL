@@ -6,6 +6,7 @@ import android.opengl.GLES11Ext
 import android.opengl.GLES20
 import android.opengl.Matrix
 import com.knight.alphavideoplayer.R
+import com.knight.alphavideoplayer.utils.Constants
 import com.knight.alphavideoplayer.utils.GlUtil
 import com.knight.alphavideoplayer.utils.TextResourceReader
 import java.nio.ByteBuffer
@@ -22,24 +23,31 @@ class GiftDrawer(val mTexture: Int, val context: Context) {
 
     private val PRE_BYTE = 4 // the number of coordinates at each point
     private val mByteStride = PRE_BYTE * 4 // the bytes of each point
+    var textureX = 0.5f
 
-    private val mVertices = floatArrayOf(
+    private var mVertices = floatArrayOf(
             // X, Y,  U, V
-            -1.0f, -1.0f,  0.3333f, 1f,
+            -1.0f, -1.0f, textureX, 1f,
             1.0f, -1.0f, 1f, 1f,
-            -1.0f, 1.0f, 0.3333f, 0f,
+            -1.0f, 1.0f, textureX, 0f,
             1.0f, 1.0f, 1f, 0f
     )
 
 
-
-//    private val mMVP = FloatArray(16)
+    //    private val mMVP = FloatArray(16)
 //    private val sTMatrix = FloatArray(16)
 
     init {
         val vertexShader = TextResourceReader.readTextFileFromResource(context, R.raw.video_alpha_vertex_shader)
-        val fragmentShader = TextResourceReader.readTextFileFromResource(context, R.raw.video_alpha_shader)
-
+        val fragmentShader = TextResourceReader.readTextFileFromResource(context, if (Constants.isNewPlayer) R.raw.video_alpha_shader_new else R.raw.video_alpha_shader)
+        textureX = if (Constants.isNewPlayer) 1f / 3f else 0.5f
+        mVertices = floatArrayOf(
+                // X, Y,  U, V
+                -1.0f, -1.0f, textureX, 1f,
+                1.0f, -1.0f, 1f, 1f,
+                -1.0f, 1.0f, textureX, 0f,
+                1.0f, 1.0f, 1f, 0f
+        )
         mProgram = GlUtil.createProgram(vertexShader, fragmentShader) // create vertex's shader and fragment's shader, add to shader for build
         if (mProgram == 0) {
             throw  RuntimeException("Unable to create GLES program")
@@ -50,17 +58,10 @@ class GiftDrawer(val mTexture: Int, val context: Context) {
         mTextureCoordinatorHandle = GLES20.glGetAttribLocation(mProgram, "aTextureCoord")
         GlUtil.checkLocation(mTextureCoordinatorHandle, "aTextureCoord")
 
-//        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix")
-//        GlUtil.checkLocation(mMVPMatrixHandle, "uMVPMatrix")
-
-//        mUSTMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uSTMatrix")
-//        GlUtil.checkLocation(mUSTMatrixHandle, "uSTMatrix")
-
         mVertexBuffer = ByteBuffer.allocateDirect(this.mVertices.size * 4).order(ByteOrder.nativeOrder())
                 .asFloatBuffer().put(this.mVertices)
         mVertexBuffer.position(0)
 
-//        Matrix.setIdentityM(sTMatrix, 0)
     }
 
     fun draw(surface: SurfaceTexture) {

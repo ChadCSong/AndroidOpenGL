@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.knight.alphavideoplayer.giftvideo.gles.GiftDrawer
 import com.knight.alphavideoplayer.giftvideo.view.IAlphaView
+import com.knight.alphavideoplayer.giftvideo.view.MyConfigChooser
 import com.knight.alphavideoplayer.utils.GlUtil
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -27,7 +28,7 @@ class AlphaGLSurfaceView : GLSurfaceView, GLSurfaceView.Renderer,
     init {
         setEGLContextClientVersion(2) // set OpenGL ES's version number to 2.0
 
-        setEGLConfigChooser(8, 8, 8, 8, 16, 0)
+        setEGLConfigChooser(MyConfigChooser())
         holder.setFormat(PixelFormat.TRANSLUCENT)
         setZOrderOnTop(true)
         setRenderer(this) // bind current surfaceview to Renderer
