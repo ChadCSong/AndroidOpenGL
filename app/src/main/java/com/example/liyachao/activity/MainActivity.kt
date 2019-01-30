@@ -2,7 +2,9 @@ package com.example.liyachao.activity
 
 import android.Manifest
 import android.app.Activity
+import android.graphics.Canvas
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.example.liyachao.R
 import com.example.liyachao.permission.PermissionUtils
@@ -47,11 +49,12 @@ class MainActivity : Activity(), View.OnClickListener {
             mChangeMp4.setOnClickListener(this)
 //            control = mCameraGLSurfaceView.mediaControl
         }, arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-
+        Log.i("liyachao111", "thread: ${Thread.currentThread().priority}");
     }
 
     override fun onClick(v: View) {
         when (v) {
+
             mSwitchCamera -> control.switchCamera()
 
             mPlayMp4 -> {
@@ -69,7 +72,7 @@ class MainActivity : Activity(), View.OnClickListener {
         }
     }
 
-    val newMp4 = arrayOf("boat1.mp4", "rocket1.mp4", "fastboat1.mp4", "airplane1.mp4")
+    val newMp4 = arrayOf("boat1.mp4", "rocket5.mp4", "fastboat1.mp4", "airplane1.mp4")
     val oldMp4 = arrayOf("boat.mp4", "rocket.mp4", "fastboat.mp4", "airplane.mp4")
     var index = 0
     private fun initPlayer() {

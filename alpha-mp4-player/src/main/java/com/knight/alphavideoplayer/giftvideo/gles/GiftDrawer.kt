@@ -40,7 +40,7 @@ class GiftDrawer(val mTexture: Int, val context: Context) {
     init {
         val vertexShader = TextResourceReader.readTextFileFromResource(context, R.raw.video_alpha_vertex_shader)
         val fragmentShader = TextResourceReader.readTextFileFromResource(context, if (Constants.isNewPlayer) R.raw.video_alpha_shader_new else R.raw.video_alpha_shader)
-        textureX = if (Constants.isNewPlayer) 1f / 3f else 0.5f
+        textureX = if (Constants.isNewPlayer) 1f / 4f else 0.5f
         mVertices = floatArrayOf(
                 // X, Y,  U, V
                 -1.0f, -1.0f, textureX, 1f,
